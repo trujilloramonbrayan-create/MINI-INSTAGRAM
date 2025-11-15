@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Mini Instagram</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="createPost()">
+        <ion-icon name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="loading" class="loading-container">
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <div *ngIf="!loading && posts.length === 0" class="empty-state">
+    <ion-icon name="images-outline"></ion-icon>
+    <p>No hay publicaciones todavía</p>
+  </div>
+
+  <ion-card *ngFor="let post of posts" class="post-card">
+    <!-- Header del post -->
+    <ion-card-header>
+      <div class="post-header">
+        <ion-avatar>
+          <div class="avatar-placeholder">
+            {{ post.user?.name?.charAt(0) || 'U' }}
+          </div>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{ post.user?.username }}</h3>
+        </ion-label>
+      </div>
+    </ion-card-header>
+
+    <!-- Imagen del post -->
+    <img [src]="post.image_url" *ngIf="post.image_url" />
+
+    <!-- Acciones -->
+    <ion-card-content>
+      <div class="post-actions">
+        <ion-button fill="clear" (click)="toggleLike(post)">
+          <ion-icon 
+            [name]="post.is_liked ? 'heart' : 'heart-outline'"
+            [color]="post.is_liked ? 'danger' : 'dark'">
+          </ion-icon>
+        </ion-button>
+        <ion-button fill="clear">
+          <ion-icon name="chatbubble-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear">
+          <ion-icon name="paper-plane-outline"></ion-icon>
+        </ion-button>
+      </div>
+
+      <p class="likes-count">{{ post.likes_count }} Me gusta</p>
+
+      <p *ngIf="post.caption" class="caption">
+        <strong>{{ post.user?.username }}</strong> {{ post.caption }}
+      </p>
+
+      <p *ngIf="post.comments_count > 0" class="comments-count">
+        Ver los {{ post.comments_count }} comentarios
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-tab-bar slot="bottom">
+  <ion-tab-button tab="feed" href="/feed">
+    <ion-icon name="home"></ion-icon>
+  </ion-tab-button>
+  
+  <ion-tab-button tab="search">
+    <ion-icon name="search"></ion-icon>
+  </ion-tab-button>
+  
+  <ion-tab-button (click)="createPost()">
+    <ion-icon name="add-circle-outline"></ion-icon>
+  </ion-tab-button>
+  
+  <ion-tab-button tab="friends" href="/friends">
+    <ion-icon name="people"></ion-icon>
+  </ion-tab-button>
+  
+  <ion-tab-button tab="profile" href="/profile">
+    <ion-icon name="person"></ion-icon>
+  </ion-tab-button>
+</ion-tab-bar>

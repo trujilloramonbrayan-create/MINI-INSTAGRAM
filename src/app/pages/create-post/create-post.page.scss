@@ -1,0 +1,29 @@
+.image-preview {
+    width: 100%;
+    margin-bottom: 1rem;
+    
+    img {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+  }
+  
+  .image-selector {
+    padding: 2rem 0;
+    text-align: center;
+  }
+  
+  .change-image {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  ion-textarea {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 8px;
+  }
