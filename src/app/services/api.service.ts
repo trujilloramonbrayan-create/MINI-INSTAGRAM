@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  private baseUrl = 'http://20.20.1.145'; 
+  // CAMBIO PRINCIPAL: Cambiar la baseUrl para usar el proxy
+  private baseUrl = '/api'; // <- CAMBIADO DE 'http://20.20.1.180' A '/api'
 
   constructor(private http: HttpClient) {}
 

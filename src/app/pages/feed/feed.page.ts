@@ -69,7 +69,7 @@ export class FeedPage implements OnInit {
     private api: ApiService,
     private router: Router
   ) {
-    // Registrar todos los iconos que se usan en el template
+    // Registrar los iconos usados
     addIcons({
       'add-circle-outline': addCircleOutline,
       'images-outline': imagesOutline,
@@ -90,9 +90,14 @@ export class FeedPage implements OnInit {
 
   loadPosts() {
     this.loading = true;
+
     this.api.getPosts().subscribe({
-      next: (posts: any) => {
-        this.posts = posts;
+      next: (res: any) => {
+        console.log('Respuesta de /posts:', res);
+
+        // Laravel normalmente devuelve { data: [...] }
+        this.posts = res.data ?? res;
+
         this.loading = false;
       },
       error: (error: any) => {
@@ -104,8 +109,10 @@ export class FeedPage implements OnInit {
 
   doRefresh(event: any) {
     this.api.getPosts().subscribe({
-      next: (posts: any) => {
-        this.posts = posts;
+      next: (res: any) => {
+        console.log('Respuesta REFRESH /posts:', res);
+
+        this.posts = res.data ?? res;
         event.target.complete();
       },
       error: (error: any) => {
@@ -116,13 +123,8 @@ export class FeedPage implements OnInit {
   }
 
   toggleLike(post: any) {
-    // Implementar lógica de like
     post.liked = !post.liked;
-    if (post.liked) {
-      post.likes_count++;
-    } else {
-      post.likes_count--;
-    }
+    post.likes_count += post.liked ? 1 : -1;
   }
 
   createPost() {
